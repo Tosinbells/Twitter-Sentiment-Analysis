@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Twitter Sentiment Analysis</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/materialize-social.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/font-awesome.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+</head>
+<body>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Twitter Sentiment Analysis</a>
+     
+      
+
+      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>,
+  </nav>
+  
+ 
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+	
+	 <!-- Form Field -->
+   <div class="row" style="margin-top:100px">
+        <div class="input-field col s12">
+          <input id="searchText" type="text" class="validate">
+          <label for="searchText">Enter search term</label>
+        </div>
+      </div>
+
+      <div class="row center">
+        <a onclick="searchWord();" id="searchButton" class="btn-large waves-effect waves-light orange">Get Sentiment Score</a>
+      </div>
+	  
+	  <div class="row center">
+    <!-- HTML Object to display output Text   style="display:none" --> 
+    <h5 id="outputText" class="header col s12 light"> </h5>
+    </div>
+
+    <!-- Section for twitter button -->
+  </br>
+    <a id='tweetButton' 
+     target='_blank' 
+     class='waves-effect waves-light btn' 
+     style='display:none;background-color:#0084b4'>Tweet
+     <i class="fab fa-twitter material-icons"></i>
+    </a>
+    </div> 
+    
+
+     
+ 
+     <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+  <script src="js/require.js"></script>
+  <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+  <script>
+	function searchWord(str){
+		//Grab text from search bar
+    searchTerm = document.getElementById("searchText").value;
+		
+    //Remove punctuations
+    searchTerm = searchTerm.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+
+    //Lowercase
+    var searchTerm = searchTerm.toLowerCase();
+
+    //Split the searchterm (sentence) into indivdual words
+    var words = searchTerm.split(" "); 
+
+    //Connect to AFFINN Lexicon file
+    function getJSON(){
+      $.getJSON("AFINN111.json", function(data){
+        lexicon = data;
+        
+        //initialise sentiment_score
+        var sentiment_score = 0;
+
+        //Loop over the sentence to obtain sentiment scores for each word
+        //assign zero sentiment to words with no lexicon reference 
+        for (var i = 0; i < words.length; i++){
+          for(var j = 0; j < lexicon.length; j++){
+            if (words[i] == lexicon[j].word){
+              scores = lexicon[j].score;
+              console.log(scores);
+            } else {
+              scores = 0;
+            }  
+            sentiment_score = sentiment_score + scores;     
+          }
+        }
+
+        //Take the average sentiment score
+        sentiment_score = (sentiment_score / words.length).toFixed(2);
+            
+        //Display sentiment score
+        document.getElementById("outputText").innerHTML = "The sentiment score is " + sentiment_score;
+
+        //create text for tweet
+        var text="The average sentiment of \"" + searchTerm + "\" is " + sentiment_score;
+        console.log(text);
+        var url="theartandscienceofdata.wordpress.com"
+        console.log(url);
+        
+        //create full URL
+        //document.getElementbyId('tweetButton').href --> This one did not work. --> update: open your eyes well
+
+        document.getElementById('tweetButton').href = 'https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url)+'&via=tosinbells';
+
+        //Learnt a new way of selecting stuff
+        //document.querySelector('#tweetButton').href='https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url)+'&via=tosinbells';
+        
+        //make button visible
+        document.getElementById('tweetButton').style.display='block'
+
+
+      /*   //Remove old twitter button
+        //Create tweet button (anchor tag) 
+        var twitterButtonId = $('#twitterbutton'); 
+        if (!!twitterButtonId){
+          twitterButtonId.remove();
+          } */
+
+       /*  var twitterAnchor = document.createElement('a');
+        twitterAnchor.setAttribute('href', 'https://twitter.com/share');
+        twitterAnchor.setAttribute('class', 'twitter-share-button');
+        twitterAnchor.setAttribute('style', 'margin-top:5px;');
+        twitterAnchor.setAttribute('id', 'twitterbutton');
+        twitterAnchor.setAttribute("data-text" , "The average sentiment of \"" + searchTerm + "\" is " + sentiment_score);
+        twitterAnchor.setAttribute("data-via" ,"RosebudAnwuri @tosinbells");
+        twitterAnchor.setAttribute("data-size" ,"large");
+
+        var tweetButton = document.getElementById('tweetDiv');  
+        tweetButton.appendChild(twitterAnchor);
+        twttr.widgets.load(); */
+
+        /* if (tweetButton = null){
+          tweetButton = document.getElementById('tweetDiv');  
+          tweetButton.appendChild(twitterAnchor);
+          twttr.widgets.load();
+        } else {
+          tweetButton = document.getElementById('tweetDiv');
+          tweetButton.parentNode.removeChild(tweetButton);
+        }  */
+       
+
+        /* if (tweetButton != null){
+          tweetButton.parentNode.removeChild(tweetButton);
+        }   */
+
+        
+
+        //Display tweet button
+        //document.getElementById("tweetButton").style.display = "block";
+
+        //document.getElementById("b").href = "https://twitter.com/intent/tweet?text=The" //average sentiment of " + searchTerm + " is" + sentiment_score;
+      });
+    }
+    getJSON();
+   
+
+    /*var GET_Response = $.getJSON("AFINN111.json");
+    var lexicon = GET_Response.responseJSON;*/
+
+    /*var lexicon; 
+    require(['http://localhost:8080/AFINN111.json'], function(json){
+      lexicon = json;
+    });*/
+
+    /*var lexicon;
+    $.getJSON('http://localhost:8080/AFINN111.json', function(json){
+      lexicon = json;
+    });*/
+
+  
+	} </script>
+
+  </body>
+</html>

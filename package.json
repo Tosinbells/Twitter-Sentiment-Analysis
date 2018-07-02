@@ -1,0 +1,32 @@
+{
+  "name": "sentiments_analysis",
+  "version": "1.0.0",
+  "description": "Obtain sentiment scores for any sentence",
+  "main": "app.js",
+  "dependencies": {
+    "angular2": "^2.0.0-beta.17",
+    "body-parser": "^1.18.3",
+    "es6-shim": "^0.35.3",
+    "express": "^4.16.3",
+    "materialize-social": "^1.0.3",
+    "reflect-metadata": "^0.1.2",
+    "rxjs": "^5.0.0-beta.6",
+    "zone.js": "^0.6.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tosinbells",
+  "license": "MIT",
+  "keywords": [
+    "sentiment",
+    "twitter",
+    "ASD",
+    "Tosinbells"
+  ],
+  "engines": {
+    "node": "8.11.3"
+  }
+}
