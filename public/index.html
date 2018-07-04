@@ -16,11 +16,10 @@
 </head>
 <body>
   <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Twitter Sentiment Analysis</a>
      
-      
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Twitter Sentiment Analysis</a>
 
-      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <!-- <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a> -->
     </div>,
   </nav>
   
@@ -45,17 +44,27 @@
     <h5 id="outputText" class="header col s12 light"> </h5>
     </div>
 
+   
     <!-- Section for twitter button -->
-  </br>
+    </br>
+ <!--  <div style="text-align:center">
     <a id='tweetButton' 
      target='_blank' 
      class='waves-effect waves-light btn' 
-     style='display:none;background-color:#0084b4'>Tweet
+     style='display:none;background-color:#0084b4;width:12%'>Tweet
      <i class="fab fa-twitter material-icons"></i>
     </a>
-    </div> 
-    
+  </div> -->
 
+  <div class="row center">
+      <a id="tweetButton"
+      target="_blank"  
+      class="waves-effect waves-light btn" 
+      style="display:none;background-color:#0084b4;padding:6px">
+        Tweet
+        <i class="fab fa-twitter material-icons"></i>
+      </a>
+  </div>
      
  
      <!--  Scripts-->
@@ -121,7 +130,8 @@
         //document.querySelector('#tweetButton').href='https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url)+'&via=tosinbells';
         
         //make button visible
-        document.getElementById('tweetButton').style.display='block'
+        document.getElementById('tweetButton').style.display="inline";
+ 
 
 
       /*   //Remove old twitter button
